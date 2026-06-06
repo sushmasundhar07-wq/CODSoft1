@@ -1,0 +1,1732 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sushma Reddy — Portfolio</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --ink: #0d0d0d;
+        --paper: #f5f0e8;
+        --cream: #ede8dd;
+        --gold: #c9a84c;
+        --gold-lt: #e8d49a;
+        --rust: #b84c2c;
+        --muted: #6b6558;
+        --white: #fdfaf5;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 9999;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 4rem;
+        background: rgba(245, 240, 232, 0.88);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(201, 168, 76, 0.25);
+      }
+
+      .nav-logo {
+        font-family: "Playfair Display", serif;
+        font-size: 1.4rem;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .nav-logo span {
+        color: var(--gold);
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 2.2rem;
+      }
+      nav ul a {
+        text-decoration: none;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        transition: color 0.2s;
+      }
+      nav ul a:hover {
+        color: var(--gold);
+      }
+
+      /* HERO */
+      #hero {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 8rem 4rem 4rem;
+        gap: 4rem;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-bg-circle {
+        position: absolute;
+        width: 560px;
+        height: 560px;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--gold-lt) 0%, transparent 70%);
+        right: -80px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.35;
+        pointer-events: none;
+      }
+      .hero-eyebrow {
+        font-size: 0.75rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        opacity: 0;
+        animation: fadeUp 0.7s 0.2s forwards;
+      }
+      .hero-name {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(3.2rem, 6vw, 5.5rem);
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        color: var(--ink);
+        opacity: 0;
+        animation: fadeUp 0.7s 0.35s forwards;
+      }
+      .hero-name em {
+        font-style: italic;
+        color: var(--rust);
+      }
+      .hero-tagline {
+        margin-top: 1.4rem;
+        font-size: 1.1rem;
+        color: var(--muted);
+        font-weight: 300;
+        line-height: 1.7;
+        max-width: 400px;
+        opacity: 0;
+        animation: fadeUp 0.7s 0.5s forwards;
+      }
+      .hero-cta {
+        margin-top: 2.5rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        opacity: 0;
+        animation: fadeUp 0.7s 0.65s forwards;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 1.8rem;
+        border-radius: 2px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+      .btn-primary {
+        background: var(--ink);
+        color: var(--white);
+        border: 2px solid var(--ink);
+      }
+      .btn-primary:hover {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: var(--ink);
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--ink);
+        border: 2px solid var(--ink);
+      }
+      .btn-outline:hover {
+        background: var(--ink);
+        color: var(--white);
+      }
+
+      .hero-image-wrap {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        animation: fadeIn 0.9s 0.4s forwards;
+      }
+      .hero-image-frame {
+        position: relative;
+        width: 380px;
+        height: 460px;
+      }
+      .hero-image-frame::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 2px solid var(--gold);
+        transform: translate(14px, 14px);
+        z-index: 0;
+      }
+      .hero-svg-wrap {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: linear-gradient(160deg, #f9e8d8 0%, #e8cdb5 100%);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .hero-badge {
+        position: absolute;
+        bottom: -18px;
+        left: -22px;
+        background: var(--rust);
+        color: var(--white);
+        padding: 0.7rem 1.2rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        z-index: 2;
+      }
+
+      /* SECTION COMMONS */
+      section {
+        padding: 6rem 4rem;
+      }
+      .section-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 500;
+        margin-bottom: 0.6rem;
+      }
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        margin-bottom: 3rem;
+      }
+      .section-title em {
+        font-style: italic;
+        color: var(--rust);
+      }
+      .divider {
+        width: 60px;
+        height: 3px;
+        background: var(--gold);
+        margin: 1rem 0 2.5rem;
+      }
+
+      /* ABOUT */
+      #about {
+        background: var(--cream);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+        align-items: center;
+      }
+      .about-text p {
+        font-size: 1rem;
+        line-height: 1.85;
+        color: var(--muted);
+        margin-bottom: 1.2rem;
+      }
+      .about-text p strong {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .about-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-top: 2.5rem;
+      }
+      .stat-box {
+        padding: 1.4rem;
+        border: 1px solid rgba(201, 168, 76, 0.3);
+        background: var(--paper);
+      }
+      .stat-number {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--ink);
+        line-height: 1;
+      }
+      .stat-number span {
+        color: var(--gold);
+      }
+      .stat-label {
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 0.3rem;
+      }
+
+      .about-visual {
+        position: relative;
+      }
+      .about-img-wrap {
+        position: relative;
+        width: 100%;
+        padding-bottom: 120%;
+      }
+      .about-img-wrap::after {
+        content: "";
+        position: absolute;
+        bottom: -12px;
+        right: -12px;
+        width: 80%;
+        height: 80%;
+        border: 2px solid var(--gold-lt);
+        z-index: 0;
+      }
+      .about-img-inner {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(145deg, #f9e4d0 0%, #e8c9b0 100%);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .about-quote {
+        position: absolute;
+        bottom: 2rem;
+        left: -2rem;
+        background: var(--ink);
+        color: var(--white);
+        padding: 1.2rem 1.5rem;
+        width: 220px;
+        z-index: 2;
+      }
+      .about-quote p {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: var(--white);
+      }
+      .about-quote cite {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      /* SKILLS */
+      #skills {
+        background: var(--paper);
+      }
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+      }
+      .skill-card {
+        padding: 2rem 1.8rem;
+        border: 1px solid rgba(13, 13, 13, 0.1);
+        background: var(--white);
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+      }
+      .skill-card::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: var(--gold);
+        transition: width 0.35s;
+      }
+      .skill-card:hover::before {
+        width: 100%;
+      }
+      .skill-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+      }
+      .skill-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        display: block;
+      }
+      .skill-name {
+        font-family: "Playfair Display", serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 0.5rem;
+      }
+      .skill-desc {
+        font-size: 0.88rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .skill-tags {
+        margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .tag {
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.25rem 0.6rem;
+        background: var(--cream);
+        color: var(--muted);
+        border-radius: 1px;
+      }
+
+      /* PROJECTS */
+      #projects {
+        background: var(--ink);
+      }
+      #projects .section-label {
+        color: var(--gold);
+      }
+      #projects .section-title {
+        color: var(--white);
+      }
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+      }
+      .project-card {
+        background: #1a1a1a;
+        overflow: hidden;
+        transition: transform 0.3s;
+        cursor: pointer;
+      }
+      .project-card:hover {
+        transform: translateY(-6px);
+      }
+      .project-thumb {
+        width: 100%;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .project-thumb::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          transparent 60%,
+          rgba(201, 168, 76, 0.15)
+        );
+      }
+      .project-body {
+        padding: 1.5rem;
+      }
+      .project-number {
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 0.4rem;
+      }
+      .project-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--white);
+        margin-bottom: 0.6rem;
+      }
+      .project-desc {
+        font-size: 0.87rem;
+        color: #999;
+        line-height: 1.6;
+        margin-bottom: 1.2rem;
+      }
+      .project-link {
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gold);
+        text-decoration: none;
+        border-bottom: 1px solid var(--gold);
+        padding-bottom: 2px;
+        transition: color 0.2s;
+      }
+      .project-link:hover {
+        color: var(--gold-lt);
+      }
+
+      /* RESUME */
+      #resume {
+        background: var(--cream);
+        text-align: center;
+        padding: 6rem 4rem;
+      }
+      .resume-inner {
+        max-width: 640px;
+        margin: 0 auto;
+      }
+      .resume-inner p {
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.75;
+        margin-bottom: 2.5rem;
+      }
+      .resume-card {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 2rem 2.5rem;
+        border: 1px solid rgba(201, 168, 76, 0.4);
+        background: var(--paper);
+        margin-bottom: 2rem;
+        text-align: left;
+      }
+      .resume-icon {
+        font-size: 2.5rem;
+        flex-shrink: 0;
+      }
+      .resume-card h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+      }
+      .resume-card p {
+        font-size: 0.87rem;
+        margin: 0;
+        color: var(--muted);
+      }
+
+      /* CONTACT */
+      #contact {
+        background: var(--paper);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+        align-items: start;
+      }
+      .contact-info {
+        padding-top: 0.5rem;
+      }
+      .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.2rem;
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(13, 13, 13, 0.08);
+      }
+      .contact-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+      .contact-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--ink);
+        color: var(--gold);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+      }
+      .contact-detail h4 {
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 0.3rem;
+      }
+      .contact-detail a,
+      .contact-detail p {
+        font-size: 1rem;
+        color: var(--ink);
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .contact-detail a:hover {
+        color: var(--gold);
+      }
+      .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .form-group label {
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .form-group input,
+      .form-group textarea {
+        padding: 0.9rem 1rem;
+        border: 1px solid rgba(13, 13, 13, 0.18);
+        background: var(--white);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.95rem;
+        color: var(--ink);
+        outline: none;
+        border-radius: 0;
+        transition: border-color 0.2s;
+        resize: vertical;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus {
+        border-color: var(--gold);
+      }
+      .form-group textarea {
+        min-height: 130px;
+      }
+
+      /* FOOTER */
+      footer {
+        background: var(--ink);
+        color: var(--white);
+        padding: 3rem 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+      .footer-brand {
+        font-family: "Playfair Display", serif;
+        font-size: 1.3rem;
+        font-weight: 900;
+      }
+      .footer-brand span {
+        color: var(--gold);
+      }
+      .footer-copy {
+        font-size: 0.82rem;
+        color: #777;
+        letter-spacing: 0.05em;
+      }
+      .footer-links {
+        display: flex;
+        gap: 1.8rem;
+        list-style: none;
+      }
+      .footer-links a {
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #888;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--gold);
+      }
+      .social-row {
+        display: flex;
+        gap: 1rem;
+      }
+      .social-link {
+        width: 38px;
+        height: 38px;
+        border: 1px solid #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #888;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+      }
+      .social-link:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 900px) {
+        nav {
+          padding: 1rem 1.5rem;
+        }
+        nav ul {
+          gap: 1.2rem;
+        }
+        #hero {
+          grid-template-columns: 1fr;
+          padding: 6rem 1.5rem 3rem;
+          text-align: center;
+        }
+        .hero-tagline {
+          max-width: 100%;
+        }
+        .hero-cta {
+          justify-content: center;
+        }
+        .hero-image-wrap {
+          display: none;
+        }
+        #about {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+          padding: 4rem 1.5rem;
+        }
+        .about-visual {
+          display: none;
+        }
+        .skills-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+        #contact {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+          padding: 4rem 1.5rem;
+        }
+        section {
+          padding: 4rem 1.5rem;
+        }
+        footer {
+          padding: 2rem 1.5rem;
+          flex-direction: column;
+          text-align: center;
+        }
+        .footer-links {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+      }
+      @media (max-width: 580px) {
+        .skills-grid {
+          grid-template-columns: 1fr;
+        }
+        .about-stats {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <a href="#hero" class="nav-logo">Sushma<span>.</span></a>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#resume">Resume</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Full-Stack Developer &amp; UI Designer</p>
+        <h1 class="hero-name">Sushma<br /><em>Reddy</em></h1>
+        <p class="hero-tagline">
+          I craft thoughtful digital experiences — from pixel-perfect interfaces
+          to scalable back-end systems.
+        </p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">View My Work</a>
+          <a href="#contact" class="btn btn-outline">Get In Touch</a>
+        </div>
+      </div>
+
+      <!-- HERO GIRL SVG ILLUSTRATION -->
+      <div class="hero-image-wrap">
+        <div class="hero-image-frame">
+          <div class="hero-svg-wrap">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 380 460"
+              width="380"
+              height="460"
+            >
+              <!-- Background gradient -->
+              <defs>
+                <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#f9e8d8" />
+                  <stop offset="100%" stop-color="#e0c4a8" />
+                </linearGradient>
+                <linearGradient id="sariGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#c9a84c" />
+                  <stop offset="100%" stop-color="#e8d49a" />
+                </linearGradient>
+                <linearGradient id="blouseGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#b84c2c" />
+                  <stop offset="100%" stop-color="#d4724a" />
+                </linearGradient>
+                <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#e8b990" />
+                  <stop offset="100%" stop-color="#d4956a" />
+                </linearGradient>
+                <radialGradient id="faceGrad" cx="50%" cy="40%" r="55%">
+                  <stop offset="0%" stop-color="#f0c898" />
+                  <stop offset="100%" stop-color="#d4956a" />
+                </radialGradient>
+              </defs>
+
+              <rect width="380" height="460" fill="url(#bgGrad)" />
+
+              <!-- Decorative pattern at bottom -->
+              <rect
+                x="0"
+                y="380"
+                width="380"
+                height="80"
+                fill="#c9a84c"
+                opacity="0.12"
+              />
+              <path
+                d="M0,390 Q95,370 190,390 Q285,410 380,390 L380,460 L0,460 Z"
+                fill="#c9a84c"
+                opacity="0.15"
+              />
+
+              <!-- Body / Sari drape -->
+              <ellipse
+                cx="190"
+                cy="370"
+                rx="95"
+                ry="110"
+                fill="url(#sariGrad)"
+              />
+              <!-- Sari pleats -->
+              <path
+                d="M130,310 Q150,360 140,460"
+                stroke="#c9a84c"
+                stroke-width="1.5"
+                fill="none"
+                opacity="0.5"
+              />
+              <path
+                d="M155,305 Q170,365 162,460"
+                stroke="#c9a84c"
+                stroke-width="1.5"
+                fill="none"
+                opacity="0.5"
+              />
+              <path
+                d="M180,300 Q190,365 185,460"
+                stroke="#b89030"
+                stroke-width="1.5"
+                fill="none"
+                opacity="0.5"
+              />
+              <path
+                d="M205,305 Q212,365 208,460"
+                stroke="#b89030"
+                stroke-width="1.5"
+                fill="none"
+                opacity="0.5"
+              />
+              <path
+                d="M230,310 Q232,365 232,460"
+                stroke="#c9a84c"
+                stroke-width="1.5"
+                fill="none"
+                opacity="0.5"
+              />
+
+              <!-- Sari border decoration -->
+              <path
+                d="M120,300 Q190,285 260,300 Q190,310 120,300Z"
+                fill="#b84c2c"
+                opacity="0.7"
+              />
+
+              <!-- Blouse (torso) -->
+              <path
+                d="M145,255 Q155,295 150,310 Q190,320 230,310 Q225,295 235,255 Q210,265 190,262 Q170,265 145,255Z"
+                fill="url(#blouseGrad)"
+              />
+              <!-- Blouse pattern dots -->
+              <circle cx="170" cy="278" r="2.5" fill="#f0d090" opacity="0.8" />
+              <circle cx="185" cy="272" r="2.5" fill="#f0d090" opacity="0.8" />
+              <circle cx="200" cy="275" r="2.5" fill="#f0d090" opacity="0.8" />
+              <circle cx="215" cy="280" r="2.5" fill="#f0d090" opacity="0.8" />
+
+              <!-- Neck -->
+              <rect
+                x="179"
+                y="230"
+                width="22"
+                height="30"
+                rx="10"
+                fill="url(#skinGrad)"
+              />
+
+              <!-- Head -->
+              <ellipse
+                cx="190"
+                cy="175"
+                rx="58"
+                ry="65"
+                fill="url(#faceGrad)"
+              />
+
+              <!-- Ears -->
+              <ellipse cx="133" cy="178" rx="9" ry="13" fill="#d4956a" />
+              <ellipse cx="247" cy="178" rx="9" ry="13" fill="#d4956a" />
+              <!-- Earrings -->
+              <circle cx="133" cy="190" r="5" fill="#c9a84c" />
+              <circle cx="247" cy="190" r="5" fill="#c9a84c" />
+              <circle cx="133" cy="190" r="2.5" fill="#b84c2c" />
+              <circle cx="247" cy="190" r="2.5" fill="#b84c2c" />
+
+              <!-- Hair - long black hair -->
+              <!-- Back hair -->
+              <ellipse cx="190" cy="148" rx="62" ry="50" fill="#1a0a00" />
+              <!-- Side hair left -->
+              <path
+                d="M133,160 Q115,200 120,270 Q128,280 136,265 Q130,210 140,170Z"
+                fill="#1a0a00"
+              />
+              <!-- Side hair right -->
+              <path
+                d="M247,160 Q265,200 260,270 Q252,280 244,265 Q250,210 240,170Z"
+                fill="#1a0a00"
+              />
+              <!-- Hair top -->
+              <ellipse cx="190" cy="120" rx="58" ry="35" fill="#1a0a00" />
+              <!-- Hair parting highlight -->
+              <path
+                d="M190,105 L190,145"
+                stroke="#3a1a00"
+                stroke-width="2"
+                opacity="0.6"
+              />
+              <!-- Bun / braid at back suggestion -->
+              <ellipse cx="190" cy="108" rx="18" ry="12" fill="#2a1200" />
+              <!-- Hair flower / accessory -->
+              <circle cx="215" cy="112" r="8" fill="#c9a84c" opacity="0.9" />
+              <circle cx="215" cy="112" r="4" fill="#b84c2c" />
+              <circle cx="207" cy="106" r="5" fill="#c9a84c" opacity="0.8" />
+              <circle cx="223" cy="106" r="5" fill="#c9a84c" opacity="0.8" />
+              <circle cx="215" cy="120" r="5" fill="#c9a84c" opacity="0.8" />
+
+              <!-- Eyebrows -->
+              <path
+                d="M161,158 Q172,152 183,156"
+                stroke="#3a1a00"
+                stroke-width="3"
+                fill="none"
+                stroke-linecap="round"
+              />
+              <path
+                d="M197,156 Q208,152 219,158"
+                stroke="#3a1a00"
+                stroke-width="3"
+                fill="none"
+                stroke-linecap="round"
+              />
+
+              <!-- Eyes -->
+              <ellipse cx="172" cy="170" rx="13" ry="10" fill="white" />
+              <ellipse cx="208" cy="170" rx="13" ry="10" fill="white" />
+              <circle cx="174" cy="171" r="7" fill="#3a1a00" />
+              <circle cx="210" cy="171" r="7" fill="#3a1a00" />
+              <circle cx="176" cy="169" r="3" fill="#1a0a00" />
+              <circle cx="212" cy="169" r="3" fill="#1a0a00" />
+              <!-- Eye shine -->
+              <circle cx="178" cy="167" r="2" fill="white" />
+              <circle cx="214" cy="167" r="2" fill="white" />
+              <!-- Eyelashes upper -->
+              <path
+                d="M159,163 Q162,158 165,161"
+                stroke="#1a0a00"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M182,160 Q185,155 188,159"
+                stroke="#1a0a00"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M195,159 Q198,154 201,158"
+                stroke="#1a0a00"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M218,161 Q221,156 224,160"
+                stroke="#1a0a00"
+                stroke-width="1.5"
+                fill="none"
+              />
+
+              <!-- Nose -->
+              <path
+                d="M187,180 Q190,195 193,180"
+                stroke="#b87850"
+                stroke-width="2"
+                fill="none"
+                stroke-linecap="round"
+              />
+              <circle cx="183" cy="193" r="3" fill="#c48a60" opacity="0.6" />
+              <circle cx="197" cy="193" r="3" fill="#c48a60" opacity="0.6" />
+              <!-- Nose pin (bindi style) -->
+              <circle cx="183" cy="193" r="1.5" fill="#c9a84c" />
+
+              <!-- Smile / lips -->
+              <path
+                d="M175,207 Q190,220 205,207"
+                stroke="#b84c2c"
+                stroke-width="2.5"
+                fill="none"
+                stroke-linecap="round"
+              />
+              <path
+                d="M176,207 Q190,214 204,207 Q190,210 176,207Z"
+                fill="#d4604a"
+                opacity="0.85"
+              />
+
+              <!-- Bindi on forehead -->
+              <circle cx="190" cy="148" r="5" fill="#b84c2c" />
+              <circle cx="190" cy="148" r="2.5" fill="#ff6644" />
+
+              <!-- Arms -->
+              <!-- Left arm -->
+              <path
+                d="M148,260 Q120,280 115,320 Q118,330 128,325 Q132,290 152,272Z"
+                fill="url(#skinGrad)"
+              />
+              <!-- Right arm -->
+              <path
+                d="M232,260 Q260,280 265,320 Q262,330 252,325 Q248,290 228,272Z"
+                fill="url(#skinGrad)"
+              />
+
+              <!-- Bangles left -->
+              <ellipse
+                cx="118"
+                cy="322"
+                rx="10"
+                ry="5"
+                fill="none"
+                stroke="#c9a84c"
+                stroke-width="2.5"
+              />
+              <ellipse
+                cx="118"
+                cy="316"
+                rx="10"
+                ry="5"
+                fill="none"
+                stroke="#b84c2c"
+                stroke-width="2"
+              />
+              <ellipse
+                cx="118"
+                cy="328"
+                rx="10"
+                ry="5"
+                fill="none"
+                stroke="#c9a84c"
+                stroke-width="2"
+              />
+              <!-- Bangles right -->
+              <ellipse
+                cx="262"
+                cy="322"
+                rx="10"
+                ry="5"
+                fill="none"
+                stroke="#c9a84c"
+                stroke-width="2.5"
+              />
+              <ellipse
+                cx="262"
+                cy="316"
+                rx="10"
+                ry="5"
+                fill="none"
+                stroke="#b84c2c"
+                stroke-width="2"
+              />
+              <ellipse
+                cx="262"
+                cy="328"
+                rx="10"
+                ry="5"
+                fill="none"
+                stroke="#c9a84c"
+                stroke-width="2"
+              />
+
+              <!-- Hands -->
+              <ellipse cx="117" cy="335" rx="12" ry="8" fill="url(#skinGrad)" />
+              <ellipse cx="262" cy="335" rx="12" ry="8" fill="url(#skinGrad)" />
+
+              <!-- Necklace -->
+              <path
+                d="M158,235 Q190,255 222,235"
+                stroke="#c9a84c"
+                stroke-width="2"
+                fill="none"
+              />
+              <circle cx="190" cy="253" r="5" fill="#c9a84c" />
+              <circle cx="176" cy="247" r="3.5" fill="#c9a84c" />
+              <circle cx="204" cy="247" r="3.5" fill="#c9a84c" />
+              <circle cx="190" cy="253" r="2.5" fill="#b84c2c" />
+
+              <!-- Subtle blush -->
+              <ellipse
+                cx="160"
+                cy="192"
+                rx="14"
+                ry="8"
+                fill="#e8806a"
+                opacity="0.18"
+              />
+              <ellipse
+                cx="220"
+                cy="192"
+                rx="14"
+                ry="8"
+                fill="#e8806a"
+                opacity="0.18"
+              />
+
+              <!-- Laptop suggestion (she's a developer!) -->
+              <rect
+                x="98"
+                y="342"
+                width="184"
+                height="8"
+                rx="4"
+                fill="#c9a84c"
+                opacity="0.5"
+              />
+            </svg>
+          </div>
+          <div class="hero-badge">Available for Work</div>
+        </div>
+      </div>
+      <div class="hero-bg-circle"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="about-text">
+        <p class="section-label">About Me</p>
+        <h2 class="section-title">
+          Passionate about<br /><em>meaningful design</em>
+        </h2>
+        <div class="divider"></div>
+        <p>
+          I'm <strong>Sushma Reddy</strong>, a full-stack developer with 5+
+          years of experience building web applications that are fast,
+          accessible, and a joy to use. My background spans design systems, REST
+          &amp; GraphQL APIs, and cloud infrastructure.
+        </p>
+        <p>
+          I believe the best products are born from
+          <strong>deep empathy with users</strong> and a relentless eye for
+          detail. When I'm not coding, I sketch UI concepts, contribute to
+          open-source, and mentor young women entering tech.
+        </p>
+        <div class="about-stats">
+          <div class="stat-box">
+            <div class="stat-number">5<span>+</span></div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">40<span>+</span></div>
+            <div class="stat-label">Projects Shipped</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">15<span>+</span></div>
+            <div class="stat-label">Happy Clients</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">3<span>x</span></div>
+            <div class="stat-label">Hackathon Winner</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-img-wrap">
+          <div class="about-img-inner">
+            <!-- About section portrait (smaller, same style) -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 300 420"
+              width="300"
+              height="420"
+            >
+              <defs>
+                <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#f9e8d8" />
+                  <stop offset="100%" stop-color="#e0c4a8" />
+                </linearGradient>
+                <radialGradient id="face2" cx="50%" cy="40%" r="55%">
+                  <stop offset="0%" stop-color="#f0c898" />
+                  <stop offset="100%" stop-color="#d4956a" />
+                </radialGradient>
+              </defs>
+              <rect width="300" height="420" fill="url(#bg2)" />
+              <path
+                d="M0,340 Q150,310 300,340 L300,420 L0,420Z"
+                fill="#c9a84c"
+                opacity="0.18"
+              />
+
+              <!-- Body -->
+              <ellipse
+                cx="150"
+                cy="360"
+                rx="88"
+                ry="100"
+                fill="#c9a84c"
+                opacity="0.85"
+              />
+              <path
+                d="M100,300 Q115,310 150,315 Q185,310 200,300 Q185,330 150,332 Q115,330 100,300Z"
+                fill="#b84c2c"
+                opacity="0.9"
+              />
+
+              <!-- Neck -->
+              <rect
+                x="140"
+                y="218"
+                width="20"
+                height="28"
+                rx="9"
+                fill="#d4956a"
+              />
+
+              <!-- Head -->
+              <ellipse cx="150" cy="163" rx="52" ry="58" fill="url(#face2)" />
+
+              <!-- Ears -->
+              <ellipse cx="100" cy="165" rx="8" ry="11" fill="#d4956a" />
+              <ellipse cx="200" cy="165" rx="8" ry="11" fill="#d4956a" />
+              <circle cx="100" cy="174" r="4" fill="#c9a84c" />
+              <circle cx="200" cy="174" r="4" fill="#c9a84c" />
+
+              <!-- Hair -->
+              <ellipse cx="150" cy="120" rx="56" ry="32" fill="#1a0a00" />
+              <ellipse cx="150" cy="138" rx="56" ry="44" fill="#1a0a00" />
+              <path
+                d="M100,148 Q83,185 88,255 Q96,262 104,250 Q98,200 108,158Z"
+                fill="#1a0a00"
+              />
+              <path
+                d="M200,148 Q217,185 212,255 Q204,262 196,250 Q202,200 192,158Z"
+                fill="#1a0a00"
+              />
+
+              <!-- Hair flower -->
+              <circle cx="172" cy="104" r="7" fill="#c9a84c" />
+              <circle cx="172" cy="104" r="3.5" fill="#b84c2c" />
+              <circle cx="164" cy="98" r="4.5" fill="#c9a84c" />
+              <circle cx="180" cy="98" r="4.5" fill="#c9a84c" />
+
+              <!-- Bindi -->
+              <circle cx="150" cy="137" r="4.5" fill="#b84c2c" />
+              <circle cx="150" cy="137" r="2" fill="#ff6644" />
+
+              <!-- Eyebrows -->
+              <path
+                d="M123,150 Q133,144 143,148"
+                stroke="#3a1a00"
+                stroke-width="2.5"
+                fill="none"
+                stroke-linecap="round"
+              />
+              <path
+                d="M157,148 Q167,144 177,150"
+                stroke="#3a1a00"
+                stroke-width="2.5"
+                fill="none"
+                stroke-linecap="round"
+              />
+
+              <!-- Eyes -->
+              <ellipse cx="133" cy="160" rx="11" ry="9" fill="white" />
+              <ellipse cx="167" cy="160" rx="11" ry="9" fill="white" />
+              <circle cx="135" cy="161" r="6" fill="#3a1a00" />
+              <circle cx="169" cy="161" r="6" fill="#3a1a00" />
+              <circle cx="137" cy="159" r="2.5" fill="white" />
+              <circle cx="171" cy="159" r="2.5" fill="white" />
+
+              <!-- Nose -->
+              <path
+                d="M147,170 Q150,182 153,170"
+                stroke="#b87850"
+                stroke-width="1.8"
+                fill="none"
+                stroke-linecap="round"
+              />
+
+              <!-- Lips -->
+              <path
+                d="M138,194 Q150,205 162,194 Q150,198 138,194Z"
+                fill="#d4604a"
+                opacity="0.85"
+              />
+              <path
+                d="M138,194 Q150,204 162,194"
+                stroke="#b84c2c"
+                stroke-width="2"
+                fill="none"
+                stroke-linecap="round"
+              />
+
+              <!-- Blush -->
+              <ellipse
+                cx="122"
+                cy="178"
+                rx="12"
+                ry="7"
+                fill="#e8806a"
+                opacity="0.18"
+              />
+              <ellipse
+                cx="178"
+                cy="178"
+                rx="12"
+                ry="7"
+                fill="#e8806a"
+                opacity="0.18"
+              />
+
+              <!-- Necklace -->
+              <path
+                d="M122,225 Q150,242 178,225"
+                stroke="#c9a84c"
+                stroke-width="1.8"
+                fill="none"
+              />
+              <circle cx="150" cy="240" r="4" fill="#c9a84c" />
+              <circle cx="150" cy="240" r="2" fill="#b84c2c" />
+
+              <!-- Arms -->
+              <path
+                d="M112,250 Q90,268 86,305 Q90,312 98,308 Q100,278 116,262Z"
+                fill="#d4956a"
+              />
+              <path
+                d="M188,250 Q210,268 214,305 Q210,312 202,308 Q200,278 184,262Z"
+                fill="#d4956a"
+              />
+              <!-- Bangles -->
+              <ellipse
+                cx="88"
+                cy="306"
+                rx="8"
+                ry="4"
+                fill="none"
+                stroke="#c9a84c"
+                stroke-width="2"
+              />
+              <ellipse
+                cx="88"
+                cy="300"
+                rx="8"
+                ry="4"
+                fill="none"
+                stroke="#b84c2c"
+                stroke-width="1.8"
+              />
+              <ellipse
+                cx="212"
+                cy="306"
+                rx="8"
+                ry="4"
+                fill="none"
+                stroke="#c9a84c"
+                stroke-width="2"
+              />
+              <ellipse
+                cx="212"
+                cy="300"
+                rx="8"
+                ry="4"
+                fill="none"
+                stroke="#b84c2c"
+                stroke-width="1.8"
+              />
+            </svg>
+          </div>
+        </div>
+        <div class="about-quote">
+          <p>"Code is poetry written for both machines and humans."</p>
+          <cite>— Sushma's principle</cite>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <p class="section-label">Expertise</p>
+      <h2 class="section-title">What I <em>bring</em> to the table</h2>
+      <div class="divider"></div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <span class="skill-icon">🎨</span>
+          <div class="skill-name">UI / UX Design</div>
+          <p class="skill-desc">
+            Creating intuitive, beautiful interfaces grounded in user research
+            and accessibility standards.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">Figma</span><span class="tag">Wireframing</span
+            ><span class="tag">A/B Testing</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <span class="skill-icon">⚛️</span>
+          <div class="skill-name">Frontend Dev</div>
+          <p class="skill-desc">
+            Building performant, responsive UIs with modern frameworks and a
+            meticulous eye for detail.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">React</span><span class="tag">TypeScript</span
+            ><span class="tag">CSS / Tailwind</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <span class="skill-icon">🛠️</span>
+          <div class="skill-name">Backend Dev</div>
+          <p class="skill-desc">
+            Designing robust APIs and scalable server-side systems that power
+            great user experiences.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">Node.js</span><span class="tag">Python</span
+            ><span class="tag">PostgreSQL</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <span class="skill-icon">☁️</span>
+          <div class="skill-name">Cloud &amp; DevOps</div>
+          <p class="skill-desc">
+            Deploying and maintaining production systems with reliability,
+            security, and observability.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">AWS</span><span class="tag">Docker</span
+            ><span class="tag">CI/CD</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <span class="skill-icon">📱</span>
+          <div class="skill-name">Mobile Dev</div>
+          <p class="skill-desc">
+            Shipping cross-platform apps with native-feeling performance and
+            polished interactions.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">React Native</span><span class="tag">Expo</span
+            ><span class="tag">Flutter</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <span class="skill-icon">🤝</span>
+          <div class="skill-name">Collaboration</div>
+          <p class="skill-desc">
+            Working across disciplines to align teams, communicate clearly, and
+            ship on time.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">Agile</span><span class="tag">Code Review</span
+            ><span class="tag">Mentoring</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <p class="section-label">Selected Work</p>
+      <h2 class="section-title">Projects I'm <em>proud of</em></h2>
+      <div class="divider" style="background: var(--gold)"></div>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div
+            class="project-thumb"
+            style="background: linear-gradient(135deg, #1a2a4a, #2a4a8a)"
+          >
+            🛒
+          </div>
+          <div class="project-body">
+            <p class="project-number">01 — E-Commerce</p>
+            <h3 class="project-title">ShopFlow Platform</h3>
+            <p class="project-desc">
+              A full-stack commerce solution with real-time inventory, dynamic
+              filtering, and a seamless checkout flow built with React &amp;
+              Node.js.
+            </p>
+            <a href="#" class="project-link">View Case Study →</a>
+          </div>
+        </div>
+        <div class="project-card">
+          <div
+            class="project-thumb"
+            style="background: linear-gradient(135deg, #1a3a2a, #2a7a4a)"
+          >
+            📊
+          </div>
+          <div class="project-body">
+            <p class="project-number">02 — Dashboard</p>
+            <h3 class="project-title">AnalyticsHub</h3>
+            <p class="project-desc">
+              A data-visualization dashboard for SaaS metrics, featuring live
+              charts, cohort analysis, and a customizable widget system.
+            </p>
+            <a href="#" class="project-link">View Case Study →</a>
+          </div>
+        </div>
+        <div class="project-card">
+          <div
+            class="project-thumb"
+            style="background: linear-gradient(135deg, #3a1a1a, #8a2a2a)"
+          >
+            📱
+          </div>
+          <div class="project-body">
+            <p class="project-number">03 — Mobile App</p>
+            <h3 class="project-title">MindSpace</h3>
+            <p class="project-desc">
+              A mindfulness &amp; habit-tracking app built in React Native.
+              Featured on the App Store with 10k+ downloads in the first month.
+            </p>
+            <a href="#" class="project-link">View Case Study →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUME -->
+    <section id="resume">
+      <div class="resume-inner">
+        <p class="section-label" style="text-align: center">My Resume</p>
+        <h2 class="section-title" style="text-align: center">
+          Download My <em>CV</em>
+        </h2>
+        <div class="divider" style="margin: 1rem auto 2.5rem"></div>
+        <p>
+          My resume summarises my education, experience, and key achievements.
+          Feel free to download it or reach out if you'd like to learn more
+          about my background.
+        </p>
+        <div class="resume-card">
+          <div class="resume-icon">📄</div>
+          <div>
+            <h3>Sushma Reddy — Full-Stack Developer</h3>
+            <p>PDF · Updated June 2026 · 1 page</p>
+          </div>
+          <a
+            href="#"
+            class="btn btn-primary"
+            style="margin-left: auto; white-space: nowrap"
+            >⬇ Download</a
+          >
+        </div>
+        <div class="resume-card">
+          <div class="resume-icon">🔗</div>
+          <div>
+            <h3>LinkedIn Profile</h3>
+            <p>
+              Connect with me on LinkedIn for recommendations and full work
+              history.
+            </p>
+          </div>
+          <a
+            href="#"
+            class="btn btn-outline"
+            style="margin-left: auto; white-space: nowrap"
+            >View →</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div>
+        <p class="section-label">Get In Touch</p>
+        <h2 class="section-title">Let's <em>work</em> together</h2>
+        <div class="divider"></div>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">✉</div>
+            <div class="contact-detail">
+              <h4>Email</h4>
+              <a href="mailto:sushma.reddy@example.com"
+                >sushma.reddy@example.com</a
+              >
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div class="contact-detail">
+              <h4>Phone</h4>
+              <p>+91 98456 78901</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div class="contact-detail">
+              <h4>Location</h4>
+              <p>Bangalore, India — Open to remote</p>
+            </div>
+          </div>
+          <div class="social-row" style="margin-top: 1rem">
+            <a href="#" class="social-link" title="GitHub">GH</a>
+            <a href="#" class="social-link" title="LinkedIn">LI</a>
+            <a href="#" class="social-link" title="Twitter/X">𝕏</a>
+            <a href="#" class="social-link" title="Dribbble">Dr</a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="section-label" style="margin-bottom: 0.6rem">
+          Send a Message
+        </p>
+        <div class="contact-form">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" placeholder="Priya Sharma" />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="priya@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" placeholder="Project Inquiry" />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea
+              id="message"
+              placeholder="Tell me about your project…"
+            ></textarea>
+          </div>
+          <button
+            class="btn btn-primary"
+            style="align-self: flex-start"
+            onclick="alert('Message sent! (wire this to your backend)')"
+          >
+            Send Message →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div>
+        <div class="footer-brand">Sushma<span>.</span>Reddy</div>
+        <p class="footer-copy" style="margin-top: 0.4rem">
+          © 2026 Sushma Reddy. All rights reserved.
+        </p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#resume">Resume</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <p class="footer-copy">Designed &amp; built with ♥ by Sushma Reddy</p>
+    </footer>
+  </body>
+</html>
