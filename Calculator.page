@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #111;
+    }
+
+    .calc {
+      background: #1a1a1a;
+      border-radius: 24px;
+      padding: 24px;
+      width: 320px;
+      border: 1px solid #2e2e2e;
+    }
+
+    .display {
+      background: #111;
+      border-radius: 14px;
+      padding: 18px 20px 14px;
+      margin-bottom: 18px;
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .expr {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: #666;
+      min-height: 18px;
+      word-break: break-all;
+      text-align: right;
+    }
+
+    .result {
+      font-family: 'DM Mono', monospace;
+      font-size: 38px;
+      font-weight: 300;
+      color: #f0f0f0;
+      line-height: 1.1;
+      word-break: break-all;
+      text-align: right;
+      transition: font-size 0.1s;
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .btn {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      height: 64px;
+      cursor: pointer;
+      transition: transform 0.08s, opacity 0.08s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn:active { transform: scale(0.93); opacity: 0.85; }
+
+    .btn-num  { background: #2c2c2c; color: #f0f0f0; }
+    .btn-num:hover  { background: #363636; }
+
+    .btn-op   { background: #3a2f1a; color: #e89a2e; }
+    .btn-op:hover   { background: #463820; }
+
+    .btn-eq   { background: #e8a030; color: #1a1a1a; }
+    .btn-eq:hover   { background: #f0ac3a; }
+
+    .btn-fn   { background: #222; color: #aaa; font-size: 14px; }
+    .btn-fn:hover   { background: #2a2a2a; }
+
+    .btn-clear { background: #3a1a1a; color: #e85050; }
+    .btn-clear:hover { background: #461f1f; }
+
+    .btn-zero {
+      grid-column: span 2;
+      justify-content: flex-start;
+      padding-left: 22px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calc">
+    <div class="display">
+      <div class="expr" id="expr"></div>
+      <div class="result" id="result">0</div>
+    </div>
+
+    <div class="btn-grid">
+      <button class="btn btn-clear" data-action="clear">AC</button>
+      <button class="btn btn-fn"    data-action="toggle">+/−</button>
+      <button class="btn btn-fn"    data-action="percent">%</button>
+      <button class="btn btn-op"    data-op="÷">÷</button>
+
+      <button class="btn btn-num"   data-num="7">7</button>
+      <button class="btn btn-num"   data-num="8">8</button>
+      <button class="btn btn-num"   data-num="9">9</button>
+      <button class="btn btn-op"    data-op="×">×</button>
+
+      <button class="btn btn-num"   data-num="4">4</button>
+      <button class="btn btn-num"   data-num="5">5</button>
+      <button class="btn btn-num"   data-num="6">6</button>
+      <button class="btn btn-op"    data-op="−">−</button>
+
+      <button class="btn btn-num"   data-num="1">1</button>
+      <button class="btn btn-num"   data-num="2">2</button>
+      <button class="btn btn-num"   data-num="3">3</button>
+      <button class="btn btn-op"    data-op="+">+</button>
+
+      <button class="btn btn-num btn-zero" data-num="0">0</button>
+      <button class="btn btn-fn"    data-action="dot">.</button>
+      <button class="btn btn-eq"    data-action="equals">=</button>
+    </div>
+  </div>
+
+  <script>
+    let cur = '0', prev = '', op = null, justEvaled = false;
+
+    const rDisp = document.getElementById('result');
+    const eDisp = document.getElementById('expr');
+
+    function fmt(n) {
+      if (isNaN(n) || !isFinite(n)) return n === Infinity ? '∞' : 'Error';
+      let s = parseFloat(n.toPrecision(12)).toString();
+      if (s.length > 13) s = parseFloat(n.toPrecision(9)).toString();
+      return s;
+    }
+
+    function setDisplay(val) {
+      rDisp.textContent = val;
+      rDisp.style.fontSize =
+        val.length > 14 ? '22px' :
+        val.length > 10 ? '28px' : '38px';
+    }
+
+    function calculate(a, b, o) {
+      a = parseFloat(a);
+      b = parseFloat(b);
+      if (o === '+') return a + b;
+      if (o === '−') return a - b;
+      if (o === '×') return a * b;
+      if (o === '÷') return b === 0 ? (a === 0 ? NaN : Infinity) : a / b;
+    }
+
+    // Number buttons
+    document.querySelectorAll('[data-num]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        let d = btn.dataset.num;
+        if (justEvaled) { cur = d; justEvaled = false; }
+        else cur = cur === '0' ? d : cur + d;
+        if (cur.length > 15) return;
+        setDisplay(cur);
+      });
+    });
+
+    // Operator buttons
+    document.querySelectorAll('[data-op]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        let o = btn.dataset.op;
+        if (op && !justEvaled) {
+          let res = fmt(calculate(prev, cur, op));
+          eDisp.textContent = prev + ' ' + op + ' ' + cur + ' ' + o;
+          prev = res; cur = res;
+          setDisplay(res);
+        } else {
+          eDisp.textContent = cur + ' ' + o;
+          prev = cur;
+        }
+        op = o;
+        justEvaled = true;
+      });
+    });
+
+    // Equals
+    document.querySelector('[data-action="equals"]').addEventListener('click', () => {
+      if (!op) return;
+      let res = fmt(calculate(prev, cur, op));
+      eDisp.textContent = prev + ' ' + op + ' ' + cur + ' =';
+      setDisplay(res);
+      cur = res; prev = ''; op = null; justEvaled = true;
+    });
+
+    // Clear
+    document.querySelector('[data-action="clear"]').addEventListener('click', () => {
+      cur = '0'; prev = ''; op = null; justEvaled = false;
+      setDisplay('0'); eDisp.textContent = '';
+    });
+
+    // Toggle sign
+    document.querySelector('[data-action="toggle"]').addEventListener('click', () => {
+      if (cur === '0') return;
+      cur = cur.startsWith('-') ? cur.slice(1) : '-' + cur;
+      setDisplay(cur);
+    });
+
+    // Percent
+    document.querySelector('[data-action="percent"]').addEventListener('click', () => {
+      cur = fmt(parseFloat(cur) / 100);
+      setDisplay(cur);
+    });
+
+    // Decimal point
+    document.querySelector('[data-action="dot"]').addEventListener('click', () => {
+      if (justEvaled) { cur = '0.'; justEvaled = false; }
+      else if (!cur.includes('.')) cur += '.';
+      setDisplay(cur);
+    });
+
+    // Keyboard support
+    document.addEventListener('keydown', e => {
+      if (e.key >= '0' && e.key <= '9')
+        document.querySelector(`[data-num="${e.key}"]`)?.click();
+      else if (e.key === '+') document.querySelector('[data-op="+"]')?.click();
+      else if (e.key === '-') document.querySelector('[data-op="−"]')?.click();
+      else if (e.key === '*') document.querySelector('[data-op="×"]')?.click();
+      else if (e.key === '/') { e.preventDefault(); document.querySelector('[data-op="÷"]')?.click(); }
+      else if (e.key === 'Enter' || e.key === '=') document.querySelector('[data-action="equals"]')?.click();
+      else if (e.key === 'Escape') document.querySelector('[data-action="clear"]')?.click();
+      else if (e.key === '.') document.querySelector('[data-action="dot"]')?.click();
+      else if (e.key === '%') document.querySelector('[data-action="percent"]')?.click();
+    });
+  </script>
+
+</body>
+</html>
