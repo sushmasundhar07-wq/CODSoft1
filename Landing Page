@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luminary — Design Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f5f0e8;
+      --ink: #1a1610;
+      --rust: #c1440e;
+      --gold: #d4a853;
+      --muted: #7a7060;
+      --card-bg: #ffffff;
+      --border: #e0d8cc;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.6;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(245,240,232,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--rust); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--rust); }
+
+    .nav-cta {
+      background: var(--ink);
+      color: var(--cream) !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 2px;
+    }
+    .nav-cta:hover { background: var(--rust); color: var(--cream) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding-top: 80px;
+    }
+
+    .hero-left {
+      padding: 6rem 4rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 2rem;
+      height: 1px;
+      background: var(--rust);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.9s ease both;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--rust);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.9s 0.15s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.9s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--rust);
+      color: white;
+      padding: 0.85rem 2rem;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { background: #a53609; transform: translateY(-2px); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink);
+      padding: 0.85rem 2rem;
+      border: 1.5px solid var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: var(--ink); color: var(--cream); }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+      animation: fadeUp 0.9s 0.45s ease both;
+    }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .stat-label {
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+
+    /* HERO RIGHT — mosaic */
+    .hero-right {
+      position: relative;
+      background: var(--ink);
+      overflow: hidden;
+    }
+    .hero-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(193,68,14,0.3) 0%, transparent 60%);
+    }
+
+    .mosaic {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 3px;
+      height: 100%;
+    }
+    .mosaic-cell {
+      background: #2a2218;
+      position: relative;
+      overflow: hidden;
+    }
+    .mosaic-cell:nth-child(1) { grid-row: span 2; background: #1f1b14; }
+    .mosaic-cell:nth-child(3) { background: var(--rust); opacity: 0.85; }
+
+    .mosaic-label {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--ink);
+      padding: 1rem 0;
+      overflow: hidden;
+      border-top: 1px solid #2a2218;
+      border-bottom: 1px solid #2a2218;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 3rem;
+      animation: marquee 20s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: rgba(245,240,232,0.4);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .marquee-item::after {
+      content: '✦';
+      color: var(--rust);
+      font-style: normal;
+    }
+
+    /* ── SERVICES ── */
+    .section { padding: 7rem 4rem; }
+    .section-tag {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 4rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1.5px solid var(--border);
+    }
+    .service-card {
+      background: var(--cream);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+      cursor: default;
+    }
+    .service-card:hover { background: var(--ink); }
+    .service-card:hover .service-title,
+    .service-card:hover .service-desc,
+    .service-card:hover .service-num { color: var(--cream); }
+    .service-card:hover .service-icon { background: var(--rust); }
+
+    .service-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      transition: color 0.3s;
+    }
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--ink);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    .service-icon svg { width: 22px; height: 22px; stroke: var(--cream); fill: none; stroke-width: 1.5; }
+    .service-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      transition: color 0.3s;
+    }
+    .service-desc {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+
+    /* ── FEATURED WORK ── */
+    .work-section { background: var(--ink); padding: 7rem 4rem; }
+    .work-section .section-title { color: var(--cream); }
+    .work-section .section-tag { color: var(--gold); }
+    .work-section .section-sub { color: rgba(245,240,232,0.5); }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1rem;
+    }
+    .work-card {
+      background: #2a2218;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .work-card:first-child { grid-row: span 2; min-height: 520px; }
+    .work-card:not(:first-child) { min-height: 250px; }
+
+    .work-card-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, #2a2218 0%, #3d3020 100%);
+      transition: transform 0.5s ease;
+    }
+    .work-card:hover .work-card-bg { transform: scale(1.03); }
+
+    .work-card-stripe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+    }
+    .stripe-rust { background: var(--rust); }
+    .stripe-gold { background: var(--gold); }
+    .stripe-cream { background: var(--cream); }
+
+    .work-card-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    }
+    .work-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .work-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: white;
+    }
+
+    /* ── PROCESS ── */
+    .process-section { padding: 7rem 4rem; background: #f0ebe0; }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .process-step {
+      position: relative;
+      padding-top: 1rem;
+    }
+    .step-line {
+      height: 2px;
+      background: var(--border);
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .step-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--rust);
+      border-radius: 50%;
+      position: absolute;
+      top: -4px;
+      left: 0;
+    }
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .step-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── TESTIMONIAL ── */
+    .testimonial-section {
+      padding: 7rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .testimonial-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+    .testimonial-quote::before {
+      content: '"';
+      font-size: 5rem;
+      color: var(--rust);
+      line-height: 0;
+      vertical-align: -2rem;
+      margin-right: 0.2rem;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .author-avatar {
+      width: 48px; height: 48px;
+      background: var(--ink);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cream);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+    }
+    .author-name { font-weight: 500; font-size: 0.95rem; }
+    .author-role { font-size: 0.8rem; color: var(--muted); }
+
+    .testimonial-right { display: flex; flex-direction: column; gap: 1.5rem; }
+    .mini-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .mini-card:hover { border-color: var(--rust); transform: translateX(4px); }
+    .mini-icon {
+      width: 36px; height: 36px;
+      background: var(--rust);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mini-icon svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; }
+    .mini-title { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .mini-text { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      background: var(--rust);
+      padding: 6rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .cta-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 900;
+      color: white;
+      line-height: 1.1;
+      max-width: 500px;
+    }
+    .cta-banner h2 em { font-style: italic; color: var(--gold); }
+    .btn-white {
+      background: white;
+      color: var(--rust);
+      padding: 1rem 2.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-white:hover { background: var(--ink); color: white; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 5rem 4rem 2.5rem;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 4rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 2.5rem;
+    }
+    .footer-brand p {
+      font-size: 0.88rem;
+      color: rgba(245,240,232,0.45);
+      line-height: 1.8;
+      margin-top: 1rem;
+      max-width: 260px;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+    }
+    .footer-logo span { color: var(--rust); }
+    .footer-col h4 {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.7rem; }
+    .footer-col ul a {
+      text-decoration: none;
+      font-size: 0.88rem;
+      color: rgba(245,240,232,0.65);
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--gold); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-bottom p { font-size: 0.8rem; color: rgba(245,240,232,0.3); }
+    .social-links { display: flex; gap: 1rem; }
+    .social-links a {
+      width: 34px; height: 34px;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      font-size: 0.75rem;
+      color: rgba(245,240,232,0.5);
+      transition: all 0.2s;
+    }
+    .social-links a:hover { border-color: var(--rust); color: var(--rust); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 300px; }
+      .hero-left { padding: 3rem 1.5rem; }
+      .section { padding: 4rem 1.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .work-grid { grid-template-columns: 1fr; }
+      .work-card:first-child { grid-row: span 1; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .testimonial-section { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
+      .cta-banner { padding: 4rem 1.5rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; padding: 3rem 1.5rem; }
+      footer { padding: 3rem 1.5rem 2rem; }
+      .work-section { padding: 4rem 1.5rem; }
+      .process-section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="#" class="nav-logo">Lumin<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Start a Project</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Creative Design Studio</div>
+      <h1 class="hero-title">
+        We craft<br><em>bold</em> digital<br>experiences
+      </h1>
+      <p class="hero-desc">
+        Luminary is a design studio that turns ambitious ideas into 
+        remarkable digital products. Strategy, design, and development — 
+        all under one roof.
+      </p>
+      <div class="hero-actions">
+        <a href="#work" class="btn-primary">View Our Work</a>
+        <a href="#services" class="btn-secondary">What We Do</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-number">140+</div>
+          <div class="stat-label">Projects Delivered</div>
+        </div>
+        <div>
+          <div class="stat-number">12yr</div>
+          <div class="stat-label">Studio Experience</div>
+        </div>
+        <div>
+          <div class="stat-number">98%</div>
+          <div class="stat-label">Client Satisfaction</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="mosaic">
+        <div class="mosaic-cell">
+          <div class="mosaic-label">Branding</div>
+        </div>
+        <div class="mosaic-cell">
+          <div class="mosaic-label">UI Design</div>
+        </div>
+        <div class="mosaic-cell"></div>
+        <div class="mosaic-cell">
+          <div class="mosaic-label">Strategy</div>
+        </div>
+        <div class="mosaic-cell">
+          <div class="mosaic-label">Motion</div>
+        </div>
+        <div class="mosaic-cell">
+          <div class="mosaic-label">Dev</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">Brand Identity</span>
+      <span class="marquee-item">Web Design</span>
+      <span class="marquee-item">Motion Graphics</span>
+      <span class="marquee-item">UX Strategy</span>
+      <span class="marquee-item">Product Design</span>
+      <span class="marquee-item">Visual Systems</span>
+      <span class="marquee-item">Brand Identity</span>
+      <span class="marquee-item">Web Design</span>
+      <span class="marquee-item">Motion Graphics</span>
+      <span class="marquee-item">UX Strategy</span>
+      <span class="marquee-item">Product Design</span>
+      <span class="marquee-item">Visual Systems</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <div class="section-tag">What We Offer</div>
+    <h2 class="section-title">Studio Services</h2>
+    <p class="section-sub">
+      From initial concept to final launch, we cover every dimension 
+      of crafting a world-class digital presence.
+    </p>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12h2M20 12h2M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </div>
+        <div class="service-title">Brand Identity</div>
+        <p class="service-desc">Strategy-led identities that carve out space in crowded markets. Logos, colour systems, typography, and brand voice.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="service-title">Web Design & Dev</div>
+        <p class="service-desc">Pixel-perfect, performance-first websites that convert visitors into customers and make lasting impressions.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="service-title">Product Design</div>
+        <p class="service-desc">User-centred UX and interface design for apps, SaaS platforms, and digital products built to delight at scale.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </div>
+        <div class="service-title">Motion & Animation</div>
+        <p class="service-desc">Purposeful motion design that adds personality, guides attention, and transforms static visuals into living stories.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">05</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="service-title">Design Systems</div>
+        <p class="service-desc">Scalable component libraries and documentation that keep your product consistent as your team and audience grows.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">06</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        </div>
+        <div class="service-title">Growth Strategy</div>
+        <p class="service-desc">Data-informed design decisions paired with conversion optimisation to ensure your digital presence drives measurable growth.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED WORK -->
+  <section class="work-section" id="work">
+    <div class="section-tag">Selected Work</div>
+    <h2 class="section-title">Projects We're Proud Of</h2>
+    <p class="section-sub">A curated selection from our recent client collaborations.</p>
+
+    <div class="work-grid">
+      <div class="work-card">
+        <div class="work-card-bg"></div>
+        <div class="work-card-stripe stripe-rust"></div>
+        <div class="work-card-info">
+          <div class="work-tag">Brand Identity · Web</div>
+          <div class="work-name">Arca Collective</div>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-bg" style="background:linear-gradient(135deg,#1e1a12,#3a2e1a)"></div>
+        <div class="work-card-stripe stripe-gold"></div>
+        <div class="work-card-info">
+          <div class="work-tag">Product Design</div>
+          <div class="work-name">Velos Finance</div>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-bg" style="background:linear-gradient(135deg,#1a1f20,#243035)"></div>
+        <div class="work-card-stripe stripe-cream"></div>
+        <div class="work-card-info">
+          <div class="work-tag">Motion · App</div>
+          <div class="work-name">Dunes Wellness</div>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-bg" style="background:linear-gradient(135deg,#20181a,#35202a)"></div>
+        <div class="work-card-stripe stripe-rust"></div>
+        <div class="work-card-info">
+          <div class="work-tag">Design System</div>
+          <div class="work-name">Meridian SaaS</div>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-bg" style="background:linear-gradient(135deg,#181c20,#222c35)"></div>
+        <div class="work-card-stripe stripe-gold"></div>
+        <div class="work-card-info">
+          <div class="work-tag">E-commerce</div>
+          <div class="work-name">Paloma Goods</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process-section" id="process">
+    <div class="section-tag">How We Work</div>
+    <h2 class="section-title">Our Creative Process</h2>
+    <p class="section-sub">Structured enough to be reliable. Flexible enough to be inspired.</p>
+
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-line"><div class="step-dot"></div></div>
+        <div class="step-num">01</div>
+        <div class="step-title">Discovery</div>
+        <p class="step-desc">Deep-dive workshops to uncover your goals, audience, competitors, and the unique angle that will make your brand stand out.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-line"><div class="step-dot"></div></div>
+        <div class="step-num">02</div>
+        <div class="step-title">Strategy</div>
+        <p class="step-desc">Define positioning, messaging hierarchy, and a creative direction that aligns business objectives with audience expectations.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-line"><div class="step-dot"></div></div>
+        <div class="step-num">03</div>
+        <div class="step-title">Design</div>
+        <p class="step-desc">From moodboards to refined deliverables, we craft every element with intention — visuals that communicate before a word is read.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-line"><div class="step-dot"></div></div>
+        <div class="step-num">04</div>
+        <div class="step-title">Launch & Grow</div>
+        <p class="step-desc">Flawless handover, technical implementation support, and ongoing optimisation to ensure your brand grows stronger over time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="testimonial-section" id="about">
+    <div>
+      <p class="testimonial-quote">
+        Luminary understood our vision immediately. The final brand system not only looks extraordinary — it has directly driven a 40% increase in qualified leads.
+      </p>
+      <div class="testimonial-author">
+        <div class="author-avatar">S</div>
+        <div>
+          <div class="author-name">Sofia Marchetti</div>
+          <div class="author-role">CEO, Arca Collective</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-right">
+      <div class="mini-card">
+        <div class="mini-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div>
+          <div class="mini-title">On-time Delivery</div>
+          <p class="mini-text">95% of our projects delivered on or before agreed deadlines, without compromising quality.</p>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+          <div class="mini-title">Long-term Partnerships</div>
+          <p class="mini-text">Over 70% of our clients return for ongoing work within 12 months of their first project.</p>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div>
+          <div class="mini-title">Measurable Results</div>
+          <p class="mini-text">Our design work delivers an average 35% uplift in conversion rates across client landing pages.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner" id="contact">
+    <h2>Ready to build something <em>remarkable?</em></h2>
+    <a href="#" class="btn-white">Start a Conversation →</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">Lumin<span>.</span></div>
+        <p>A creative design studio crafting bold digital experiences for brands that want to be remembered.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Brand Identity</a></li>
+          <li><a href="#">Web Design</a></li>
+          <li><a href="#">Product Design</a></li>
+          <li><a href="#">Motion</a></li>
+          <li><a href="#">Design Systems</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Studio</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Work</a></li>
+          <li><a href="#">Process</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Journal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="#">hello@luminary.studio</a></li>
+          <li><a href="#">+1 (415) 000-1234</a></li>
+          <li><a href="#">San Francisco, CA</a></li>
+          <li><a href="#">London, UK</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Luminary Studio. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#">Tw</a>
+        <a href="#">Ig</a>
+        <a href="#">Li</a>
+        <a href="#">Dr</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
